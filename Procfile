@@ -1,1 +1,1 @@
-Woker: node bot
+Woker: node index.js

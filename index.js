@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const YTDL = require("ytdl-core");
+const weather = require('weather-js');
 
 const TOKEN = "MzU4OTg3NDg5NzAyMzEzOTg0.DKRU2g.8HLC7de1aX0X60Dew6nni5biF2I";
 const PREFIX = "n!";
@@ -49,7 +50,7 @@ bot.on("guildMemberAdd", function(member) {
 
 bot.on("message",function(message) {
 
-    const swearWords = ["nigga", "nigger", "faggot", "fgt", "removekebab", "coon", "cunt", "fuck", "nig", "hitler", "nazi", "Nazi"];
+    const swearWords = ["nigga", "nigger", "faggot", "fgt", "removekebab", "coon", "cunt", "nigg@", "nig", "hitler", "NIGGA", "Nigga"];
     if (swearWords.some(word => message.content.includes(word)) ) {
       message.reply("This Word is Banned!. Please do not use this word again. Warning has been Giving!");
       message.delete();
@@ -65,7 +66,7 @@ bot.on("message",function(message) {
 
     switch (args[0].toLowerCase()) { 
         case "ping":
-        message.channel.send("Pong!");
+        message.channel.send("Pong :ping_pong:");
         break;
 
         
@@ -77,20 +78,16 @@ bot.on("message",function(message) {
         case "higherranks":
         var embed = new Discord.RichEmbed()
         .setTitle("Higher Ranking Admins.")
-        .addField("-----------------------", ".")
+        .setThumbnail(URL="https://s1.postimg.org/44lhl7ximn/Higer_ranking.png")
+        .setDescription("-----------------------------------")
         .addField("Owner", "Highlord")
         .addField("Head Admin Minisiege", "BearlyHuman")
         .addField("Head Admin EU", "BlackKnight")
         .addField("Website Manager", "Max")
         .addField("Great Sister", "Kanade Tachibana")
-        .addField("Senior Admin Minsiege", "QuickOne")
-        .addField("Senior Admin Minsiege", "Beth")
-        .addField("Senior Admin Minsiege", "Gretel")
-        .addField("Senior Admin Eu-Commander", "Diamond")
-        .addField("Senior Admin Eu-Commander", "ed112")
-        .addField("Senior Admin Eu-Commander", "Thundgil")
-        .addField("GameAdmin Minsiege / Map Managers", "Futui")
-        .addField("GameAdmin Minsiege / Map Managers", "Kruse")
+        .addField("Senior Admin Minsiege", "QuickOne ,Gretel , Beth ")
+        .addField("Senior Admin Eu-Commander", "Diamond, Ed112, Thundgil")
+        .setFooter("⚠ This list can change at any given time, Please keep an eye on the admins that are listed. ⚠")
         message.channel.sendEmbed(embed);
         break;
 
@@ -104,38 +101,26 @@ bot.on("message",function(message) {
 
         case "siegeadmins":
         var embed = new Discord.RichEmbed()
-        .setTitle("Minisiege Game Admins.")
-        .addField("-----------------------", ".")
-        .addField("GameAdmin Minsiege", "George_Fifth")
-        .addField("GameAdmin Minsiege", "Takeout")
-        .addField("GameAdmin Minsiege", "Brandon")
-        .addField("GameAdmin Minsiege", "Zarovich")
-        .addField("GameAdmin Minsiege", "Dr. Dimples")
-        .addField("GameAdmin Minsiege", "kemosabe")
-        .addField("GameAdmin Minsiege", "Loifas")
-        .addField("GameAdmin Minsiege", "Soda")
-        .addField("GameAdmin Minsiege", "Strategie99")
-        .addField("GameAdmin Minsiege", "Welly")
-        .addField("GameAdmin Minsiege", "Caesim")
+        .setTitle("Minsiege Admins")
+        .setThumbnail(URL="https://s1.postimg.org/26ow3unr8f/Minisiege_embed_logog.png")
+        .setDescription("George_Fith, Takeout, Brandon, Zarovich, Dr.Dimples, Kemosabe, Loifas, Soda, Strategie99, Welly, Caesim.")
+        .setFooter("⚠ This list can change at any given time, Please keep an eye on the admins that are listed. ⚠")
         message.channel.sendEmbed(embed);
         break;
 
         case "euadmins":
         var embed = new Discord.RichEmbed()
         .setTitle("Eu Commander Game Admins.")
-        .addField("-----------------------", ".")
-        .addField("GameAdmin Minsiege", "Roenz")
-        .addField("GameAdmin Minsiege", "Old_Man_Napoleon(Hic)")
-        .addField("GameAdmin Minsiege", "Mask")
-        .addField("GameAdmin Minsiege", "firefly")
-        .addField("GameAdmin Minsiege", "Dima") 
+        .setThumbnail(URL="https://s1.postimg.org/8pcmpi48z3/EUC_LOGO.png")
+        .setDescription("Roenz, Old_Man_Napoleon, Mask, Firefly, Dima.")
+        .setFooter("⚠ This list can change at any given time, Please keep an eye on the admins that are listed. ⚠")
         message.channel.sendEmbed(embed);
         break;
 
         case "cmds":
         var embed = new Discord.RichEmbed()
         .setTitle("Bot Commands!")
-        .addField("-----------------------", "Don't forget to place the command right after !Nw <----- with no spaces.")
+        .addField("-----------------------", "Don't forget to place the command right after n! <----- with no spaces.")
         .addField("------------------------", "ping")
         .addField("------------------------", "ban / name / reason")
         .addField("------------------------", "kick / name / reason")
@@ -148,9 +133,11 @@ bot.on("message",function(message) {
         .addField("------------------------", "botinfo")
         .addField("------------------------", "avatar")
         .addField("------------------------", "purge / amount = removes messages")
+        .addField("------------------------", "weather")
         .addField("------------------------", "cmds")
         .setFooter("These Commands will change and will have more added :D");
         message.author.send({embed: embed});
+        message.channel.send(message.author.toString() + " The cmds will be sent in a private message.");
         break;
 
         case "kick":
@@ -161,6 +148,39 @@ bot.on("message",function(message) {
             message.reply(`${member.user.username} was succesfully kicked.`);
           }
           break;
+
+          case "weather":
+          
+          {
+            weather.find({search: args.join(" "), degreeType: 'F'}, function(err, result) { 
+                if (err) message.channel.send(err);
+    
+                
+                if (result.length === 0) {
+                    message.channel.send('**Please enter a valid location.**') 
+                    return; 
+                }
+    
+                
+                var current = result[0].current;
+                var location = result[0].location; 
+                
+                const embed = new Discord.RichEmbed()
+                    .setDescription(`**${current.skytext}**`)
+                    .setAuthor(`Weather for ${current.observationpoint}`) 
+                    .setThumbnail(current.imageUrl) 
+                    .setColor(0x00AE86) 
+                    .addField('Timezone',`UTC${location.timezone}`, true) 
+                    .addField('Temperature',`${current.temperature} Degrees`, true)
+                    .addField('Feels Like', `${current.feelslike} Degrees`, true)
+                    .addField('Winds',current.winddisplay, true)
+                    .addField('Humidity', `${current.humidity}%`, true)
+    
+                    
+                    message.channel.send({embed});
+            });
+        }
+        break;
           
 
           
@@ -171,7 +191,7 @@ bot.on("message",function(message) {
            member.ban(reason);
            message.reply(`${member.user.username} was succesfully banned.`);
          }
-         break;S
+         break;
 
          case "purge":
          {
@@ -225,10 +245,10 @@ bot.on("message",function(message) {
         break;
 
             default:
-        message.channel.send("Invaild Command!, Type n! for the public commands.");
+        message.channel.send("Invaild Command!, Type n!cmds for the public commands.");
     }
 });
 
 
 
-bot.login(process.env.BOT_TOKEN);
+bot.login(TOKEN);
